@@ -1,13 +1,11 @@
 package com.example.trivia.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,11 +15,22 @@ public class GameSession {
     private Long id;
 
     @ManyToOne
-    private User user;
+    private User host;
 
+    private boolean multiplayer;
+    private boolean arcadeMode;
+    private boolean started;
+    private boolean ended;
     private int score;
-    private int questionCount;
-    private LocalDateTime playedAt;
+    private Instant startedAt;
+    private Instant endedAt;
 
+    private String token;
 
+    @ElementCollection
+    private List<Integer> categoryFilter;
+
+    @OneToMany(mappedBy = "gameSession", cascade = CascadeType.ALL)
+    private List<GamePlayer> players;
 }
+
