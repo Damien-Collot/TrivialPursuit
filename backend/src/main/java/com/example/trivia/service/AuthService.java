@@ -30,6 +30,14 @@ public class AuthService {
     }
 
     public Map<String, Object> register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already in use");
+        }
+
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Username already taken");
+        }
+
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
@@ -39,6 +47,8 @@ public class AuthService {
         String token = jwtUtil.generateToken(user.getEmail());
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
+        response.put("username", user.getUsername());
+        response.put("userId", user.getId());
         return response;
     }
 
@@ -47,9 +57,14 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        String token = jwtUtil.generateToken(request.getEmail());
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        String token = jwtUtil.generateToken(user.getEmail());
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
+        response.put("username", user.getUsername());
+        response.put("userId", user.getId());
         return response;
     }
 }

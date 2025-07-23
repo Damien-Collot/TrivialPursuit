@@ -1,15 +1,12 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:trivia/screens/home_screen.dart';
-import 'package:trivia/screens/login_screen.dart';
-import 'package:trivia/services/auth_service.dart';
+import 'package:trivia/screens/splash_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const TriviaApp());
 }
 
-class MyApp extends StatelessWidget {
-  final AuthService _authService = AuthService();
+class TriviaApp extends StatelessWidget {
+  const TriviaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,20 +14,9 @@ class MyApp extends StatelessWidget {
       title: 'Trivia Game',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
-        scaffoldBackgroundColor: const Color(0xFFEFF3F8),
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: FutureBuilder<bool>(
-        future: _authService.isLoggedIn(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasData && snapshot.data!) {
-            return const HomeScreen();
-          } else {
-            return const LoginScreen();
-          }
-        },
-      ),
+      home: const SplashScreen(),
     );
   }
 }
