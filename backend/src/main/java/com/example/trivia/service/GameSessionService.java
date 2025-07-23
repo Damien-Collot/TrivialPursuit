@@ -207,7 +207,8 @@ public class GameSessionService {
 
         StringBuilder url = new StringBuilder(triviaApiBaseUrl + "/api.php?amount=1&token=" + session.getToken());
         if (!session.getCategoryFilter().isEmpty()) {
-            url.append("&category=").append(session.getCategoryFilter().get(0));
+            Random randomNumbers = new Random();
+            url.append("&category=").append(session.getCategoryFilter().get(randomNumbers.nextInt(session.getCategoryFilter().size())));
         }
         if (session.getDifficulty() != null) {
             url.append("&difficulty=").append(session.getDifficulty());
@@ -243,7 +244,8 @@ public class GameSessionService {
         StringBuilder url = new StringBuilder(triviaApiBaseUrl + "/api.php?amount=1&token=" + session.getToken());
 
         if (!session.getCategoryFilter().isEmpty()) {
-            url.append("&category=").append(session.getCategoryFilter().get(0));
+            Random randomNumbers = new Random();
+            url.append("&category=").append(session.getCategoryFilter().get(randomNumbers.nextInt(session.getCategoryFilter().size())));
         }
         if (session.getDifficulty() != null && !session.getDifficulty().isBlank()) {
             url.append("&difficulty=").append(session.getDifficulty());
