@@ -24,7 +24,8 @@ public class GameSessionSummaryDto {
             return endedAt.getEpochSecond() - startedAt.getEpochSecond();
         }
         return 0;
-    }public String getStatus() {
+    }
+    public String getStatus() {
         return ended ? "Completed" : "In Progress";
     }
 

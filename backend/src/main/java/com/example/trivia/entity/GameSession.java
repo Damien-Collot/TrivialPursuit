@@ -16,17 +16,37 @@ public class GameSession {
 
     @ManyToOne
     private User host;
+    @Column(name = "classic_mode")
+    private boolean classicMode;
 
+    @Column(name = "question_limit")
+    private int questionLimit;
+
+    @Column(name = "questions_answered")
+    private int questionsAnswered;
+
+    @Column(name = "difficulty")
+    private String difficulty;
+    @Column
     private boolean multiplayer;
+    @Column
     private boolean arcadeMode;
+    @Column
     private boolean started;
+    @Column
     private boolean ended;
+    @Column
     private int score;
+    @Column
     private Instant startedAt;
+    @Column
     private Instant endedAt;
-
+    @Column
     private String token;
-
+    @Column
+    private String currentCorrectAnswer;
+    @Column(name = "current_question_number")
+    private int currentQuestionNumber;
     @ElementCollection
     private List<Integer> categoryFilter;
 
