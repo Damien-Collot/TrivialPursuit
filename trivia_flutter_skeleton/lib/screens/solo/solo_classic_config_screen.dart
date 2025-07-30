@@ -40,25 +40,26 @@ class _SoloClassicConfigScreenState extends State<SoloClassicConfigScreen> {
   void _startGame() async {
     setState(() => _loading = true);
 
-    final sessionId = await _gameService.createSoloClassicGame(
-      userId: widget.currentUserId,
-      questionLimit: _questionCount,
-      difficulty: _selectedDifficulty,
-      categories: _selectedCategories.toList(),
+    final session = await _gameService.startSoloClassicSession(
+        userId: widget.currentUserId,
+        questionLimit: _questionCount,
+        difficulty: _selectedDifficulty,
+        categories: _selectedCategories.toList(),
     );
+    final sessionId = session?['id'];
+
 
     setState(() => _loading = false);
 
     if (sessionId != null) {
-      Navigator.pushNamed(
-        context,
-        '/soloClassicGame',
-        extra: {
+        Navigator.pushNamed(
+            context,
+            '/soloClassicGame',
+            extra: {
+            'sessionId': sessionId,
             'questionLimit': _questionCount,
-            'difficulty': _selectedDifficulty,
-            'categories': _selectedCategories.toList(),
-        },
-     );
+            },
+        );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erreur lors de la création de la session')),

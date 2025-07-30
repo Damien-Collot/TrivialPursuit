@@ -14,15 +14,14 @@ final router = GoRouter(
     GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()),
     GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
     GoRoute(
-      path: '/soloClassicGame',
-      builder: (context, state) {
-        final args = state.extra as Map<String, dynamic>;
-        return SoloClassicGameScreen(
-          questionLimit: args['questionLimit'],
-          difficulty: args['difficulty'],
-          categories: args['categories'],
-        );
-      },
-    ),
+    path: '/soloClassicGame',
+    builder: (context, state) {
+      final args = state.extra as Map<String, dynamic>;
+      return SoloClassicGameScreen(
+        sessionId: args['sessionId'],
+        questionLimit: args['questionLimit'],
+      );
+    },
+  ),
   ],
 );

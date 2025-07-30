@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:trivia/core/constants/colors.dart';
 import 'package:trivia/services/game_service.dart';
 import 'package:html_unescape/html_unescape.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SoloClassicGameScreen extends StatefulWidget {
+  final int sessionId;
   final int questionLimit;
-  final String? difficulty;
-  final List<int>? categories;
 
   const SoloClassicGameScreen({
     super.key,
+    required this.sessionId,
     required this.questionLimit,
-    this.difficulty,
-    this.categories,
   });
 
   @override
@@ -22,48 +19,22 @@ class SoloClassicGameScreen extends StatefulWidget {
 
 class _SoloClassicGameScreenState extends State<SoloClassicGameScreen> {
   final GameService _gameService = GameService();
-  final unescape = HtmlUnescape();
+  final HtmlUnescape unescape = HtmlUnescape();
 
   int score = 0;
   int questionCount = 0;
-  int? sessionId;
   Map<String, dynamic>? currentQuestion;
   bool loading = true;
-
-  Future<int?> _getUserId() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt("userId");
-  }
 
   @override
   void initState() {
     super.initState();
-    startGame();
-  }
-
-  Future<void> startGame() async {
-    setState(() => loading = true);
-    final userId = await _getUserId();
-    if (userId == null) return;
-
-    final session = await _gameService.startSoloClassicSession(
-      userId: userId,
-      questionLimit: widget.questionLimit,
-      difficulty: widget.difficulty,
-      categories: widget.categories,
-    );
-
-    if (session == null) return;
-
-    sessionId = session["id"];
-    await fetchNextQuestion();
+    fetchNextQuestion();
   }
 
   Future<void> fetchNextQuestion() async {
-    if (sessionId == null) return;
-
     setState(() => loading = true);
-    final question = await _gameService.fetchNextQuestion(sessionId!);
+    final question = await _gameService.fetchNextQuestion(widget.sessionId);
     setState(() {
       currentQuestion = question;
       loading = false;
@@ -71,10 +42,8 @@ class _SoloClassicGameScreenState extends State<SoloClassicGameScreen> {
   }
 
   void submitAnswer(String answer) async {
-    if (sessionId == null) return;
-
     final result = await _gameService.submitAnswer(
-      sessionId: sessionId!,
+      sessionId: widget.sessionId,
       userAnswer: answer,
     );
 
