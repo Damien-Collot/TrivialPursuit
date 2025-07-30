@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:trivia/screens/login_screen.dart';
-import 'package:trivia/screens/home_screen.dart';
 import 'package:trivia/core/constants/colors.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -36,12 +35,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Future<void> _checkAuthStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('jwt');
-    await Future.delayed(const Duration(seconds: 3)); // temps d'affichage total
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (!mounted) return;
 
     if (token != null) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+      context.go('/home');
     } else {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
+      context.go('/');
     }
   }
 

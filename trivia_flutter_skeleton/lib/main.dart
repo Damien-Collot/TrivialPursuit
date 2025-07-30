@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trivia/screens/splash_screen.dart';
+import 'package:trivia/config/routes.dart';
 
 void main() {
   runApp(const TriviaApp());
@@ -10,13 +10,9 @@ class TriviaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Trivia Game',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      home: const SplashScreen(),
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: router,
     );
   }
 }
