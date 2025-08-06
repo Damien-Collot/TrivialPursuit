@@ -1,0 +1,22 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven {
+            // Utilise le plugin Flutter depuis le SDK local
+            url = uri("${System.env.FLUTTER_ROOT}/packages/flutter_tools/gradle")
+        }
+    }
+}
+
+plugins {
+    id "dev.flutter.flutter-plugin-loader" version "1.0.0"
+    id "com.android.application" version "8.1.0" apply false
+    id "org.jetbrains.kotlin.android" version "1.9.0" apply false
+}
+
+include(":app")
+
+// Chargement du projet Flutter
+includeBuild("${System.env.FLUTTER_ROOT}/packages/flutter_tools/gradle")
